@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -140,7 +141,7 @@ public class TmdbApi {
                 try {
                     JSONObject obj = new JSONObject(result);
                     callback.callback(obj, responseCode);
-                } catch (Exception ex) {
+                } catch (JSONException ex) {
                     ex.printStackTrace();
                     callback.callback(null, responseCode);
                 }

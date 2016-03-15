@@ -1,44 +1,48 @@
 package de.lbader.apps.movietime.viewfactories;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import de.lbader.apps.movietime.R;
-import de.lbader.apps.movietime.api.objects.BaseObject;
+import de.lbader.apps.movietime.api.objects.Cast;
+import de.lbader.apps.movietime.api.objects.Season;
 
-public class BaseObjectHolder extends RecyclerView.ViewHolder {
+public class SeasonObjectHolder extends RecyclerView.ViewHolder {
     private ImageView imageView;
-    private TextView titleView;
+    private TextView episodes;
+    private TextView release;
+    private TextView name;
     private Context context;
     private CardView cardView;
-    private Drawable placeholder;
 
-    public BaseObjectHolder(View view) {
+    public SeasonObjectHolder(View view) {
         super(view);
         context = view.getContext();
         cardView = (CardView) view;
-        imageView = (ImageView)view.findViewById(R.id.baseobject_img);
-        titleView = (TextView) view.findViewById(R.id.baseobject_title);
+        imageView = (ImageView)view.findViewById(R.id.imageView);
+        name = (TextView) view.findViewById(R.id.name);
+        episodes = (TextView) view.findViewById(R.id.episodes);
+        release = (TextView) view.findViewById(R.id.release);
     }
 
-    public void update(BaseObject baseObject) {
+
+    public void update(Season season) {
         Picasso
                 .with(context)
-                .load(baseObject.getPosterUri())
+                .load(season.getPosterUri())
                 .fit()
                 .centerInside()
                 .into(imageView);
 
-        titleView.setText(baseObject.getName());
+        name.setText(season.getName());
+        episodes.setText("" + season.getEpisodeCount());
+        release.setText(season.getReleaseDate());
     }
 
     public void setOnClickListener(CardView.OnClickListener listener) {
@@ -49,8 +53,8 @@ public class BaseObjectHolder extends RecyclerView.ViewHolder {
         return imageView;
     }
 
-    public TextView getTitleView() {
-        return titleView;
+    public TextView getTextView() {
+        return name;
     }
 
     public CardView getCardView() {

@@ -47,14 +47,97 @@
                     android:layout_below="@id/titleTextView"
                     style="?android:attr/ratingBarStyleSmall"
                     android:isIndicator="true"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/rating"
+                    android:layout_alignTop="@+id/rating"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:id="@+id/votecount"
+                    android:layout_marginStart="@dimen/cardview_spacing"
+                    android:layout_marginLeft="@dimen/cardview_spacing" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ratingHeader"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/colorSecondaryText"
+                    android:text="@string/votecount"
+                    android:layout_alignTop="@+id/rating"
+                    android:layout_toRightOf="@+id/votecount"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/status"
+                    android:textColor="@color/colorSecondaryText"
+                    android:layout_below="@id/rating"
+                    android:layout_marginTop="@dimen/cardview_spacing"
+                    android:id="@+id/statusHeader"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/status"
+                    android:layout_below="@id/statusHeader"
+                    android:layout_marginStart="@dimen/cardview_spacing"
+                    android:layout_marginLeft="@dimen/cardview_spacing"
+                    android:textAppearance="?android:attr/textAppearance"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/releasedate"
+                    android:textColor="@color/colorSecondaryText"
+                    android:layout_below="@id/status"
+                    android:layout_marginTop="@dimen/cardview_spacing"
+                    android:id="@+id/releaseHeader"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/releasedate"
+                    android:layout_below="@id/releaseHeader"
+                    android:layout_marginStart="@dimen/cardview_spacing"
+                    android:layout_marginLeft="@dimen/cardview_spacing"
+                    android:textAppearance="?android:attr/textAppearance"/>
+
             </RelativeLayout>
 
         </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/taglineHeader"
+            android:textColor="@color/colorSecondaryText"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginTop="@dimen/cardview_spacing"
+            android:text="@string/tagline"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tagline"
+            android:textAppearance="?android:attr/textAppearance"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/overviewHeader"
+            android:layout_marginTop="@dimen/cardview_spacing"
+            android:textColor="@color/colorSecondaryText"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/description"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/overviewTextView"
-            android:textAppearance="?android:attr/textAppearance"/>
+            android:textAppearance="?android:attr/textAppearance" />
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

@@ -4,6 +4,11 @@ import android.net.Uri;
 
 import org.json.JSONObject;
 
+import java.net.HttpURLConnection;
+
+import de.lbader.apps.movietime.api.ApiCallback;
+import de.lbader.apps.movietime.api.ApiParams;
+import de.lbader.apps.movietime.api.SimpleCallback;
 import de.lbader.apps.movietime.api.TmdbApi;
 
 /**
@@ -14,7 +19,10 @@ public abstract class BaseObject extends ApiObject {
     protected String poster_path;
     protected String overview;
     protected double vote_average;
+    protected boolean loaded = false;
     protected int id;
+
+    protected String api_base = "";
 
     public BaseObject() {
 
@@ -43,5 +51,22 @@ public abstract class BaseObject extends ApiObject {
 
     public int getId() {
         return id;
+    }
+
+    public void load(final SimpleCallback callback) {
+        if (loaded) {
+            callback.callback();
+        } else {
+            TmdbApi.call(api_base + id, new ApiParams(true), new ApiCallback() {
+                @Override
+                public void callback(JSONObject result, int responseCode) {
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        load(result);
+                        loaded = true;
+                        callback.callback();
+                    }
+                }
+            });
+        }
     }
 }

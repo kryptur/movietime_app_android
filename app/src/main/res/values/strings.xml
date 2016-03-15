@@ -18,9 +18,30 @@
     <string name="detail_title_roles">Rollen</string>
     <string name="detail_title_reviews">Rezensionen</string>
     <string name="detail_title_videos">Videos</string>
+    <string name="detail_title_seasons">Staffeln</string>
 
     <string name="birthdate">Geburtsdatum</string>
     <string name="birthlocation">Geburtsort</string>
+    <string name="tagline">Tagline</string>
+    <string name="description">Beschreibung</string>
+    <string name="votecount">Bewertungen</string>
+    <string name="status">Status</string>
+    <string name="releasedate">Erscheinungsdatum</string>
+    <string name="episodes">Episoden</string>
+
+
+    <string name="season">Staffel</string>
+    <string name="seasonspecials">Season Specials</string>
+    <string name="episodecount">Episodenanzahl</string>
 
     <string name="as">als</string>
+
+    <!-- MOVIES -->
+    <string name="latest">Neueste</string>
+    <string name="nowPlaying">Läuft grade</string>
+    <string name="popular">Beliebt</string>
+    <string name="topRated">Top bewertet</string>
+    <string name="upcoming">Demnächst</string>
+    <string name="today">Heute</string>
+
 </resources>

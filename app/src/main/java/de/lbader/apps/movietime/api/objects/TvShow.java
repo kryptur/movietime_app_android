@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.lbader.apps.movietime.api.ApiCallback;
@@ -15,13 +16,7 @@ import de.lbader.apps.movietime.api.SimpleCallback;
 import de.lbader.apps.movietime.api.TmdbApi;
 
 public class TvShow extends WatchableObject {
-    private List<Genre> genres;
-    private String orig_lang;
-    private String orig_name;
-    private double popularity;
-    private List<Country> origin_countries;
-    private String air_date;
-    private int vote_count;
+    private ArrayList<Season> seasons;
 
     public TvShow() {
         api_base = "tv/";
@@ -35,6 +30,17 @@ public class TvShow extends WatchableObject {
             this.poster_path = jsonObject.getString("poster_path");
             this.backdrop_path = jsonObject.getString("backdrop_path");
             this.vote_average = jsonObject.getDouble("vote_average");
+            this.status = jsonObject.optString("status", "");
+            this.releaseDate = jsonObject.optString("first_air_date", "");
+            if (jsonObject.has("seasons")) {
+                JSONArray seas = jsonObject.getJSONArray("seasons");
+                seasons = new ArrayList<>();
+                for (int i = 0; i < seas.length(); ++i) {
+                    Season season = new Season(this);
+                    season.load(seas.getJSONObject(i));
+                    seasons.add(season);
+                }
+            }
         } catch (JSONException ex) {
             ex.printStackTrace();
         }
@@ -67,5 +73,9 @@ public class TvShow extends WatchableObject {
                 }
             });
         }
+    }
+
+    public ArrayList<Season> getSeasons() {
+        return seasons;
     }
 }

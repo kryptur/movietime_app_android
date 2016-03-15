@@ -1,6 +1,7 @@
 package de.lbader.apps.movietime.api.objects;
 
 import android.net.Uri;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,8 +23,9 @@ public abstract class WatchableObject extends BaseObject {
     protected boolean video_loaded;
     protected ArrayList<Cast> casts = new ArrayList<>();
     protected ArrayList<Video> videos = new ArrayList<>();
-    protected String api_base = "";
-    protected boolean loaded = true;
+    protected long voteCount;
+    protected String status;
+    protected String releaseDate;
 
     public void setId(int id) {
         this.id = id;
@@ -85,20 +87,15 @@ public abstract class WatchableObject extends BaseObject {
         return loaded;
     }
 
-    public void load(final SimpleCallback callback) {
-        if (loaded) {
-            callback.callback();
-        } else {
-            TmdbApi.call(api_base + id, new ApiParams(true), new ApiCallback() {
-                @Override
-                public void callback(JSONObject result, int responseCode) {
-                    if (responseCode == HttpURLConnection.HTTP_OK) {
-                        load(result);
-                        loaded = true;
-                        callback.callback();
-                    }
-                }
-            });
-        }
+    public long getVoteCount() {
+        return voteCount;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
     }
 }

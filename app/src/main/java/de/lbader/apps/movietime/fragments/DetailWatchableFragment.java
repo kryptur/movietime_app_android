@@ -12,6 +12,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 import de.lbader.apps.movietime.R;
 import de.lbader.apps.movietime.adapters.FragmentHolder;
@@ -20,6 +23,7 @@ import de.lbader.apps.movietime.api.objects.Movie;
 import de.lbader.apps.movietime.api.objects.TvShow;
 import de.lbader.apps.movietime.api.objects.WatchableObject;
 import de.lbader.apps.movietime.logic.DetailCastLogic;
+import de.lbader.apps.movietime.logic.DetailSeasonLogic;
 import de.lbader.apps.movietime.logic.DetailVideoLogic;
 import de.lbader.apps.movietime.logic.DetailWatchLogic;
 import de.lbader.apps.movietime.logic.DiscoverLogic;
@@ -35,6 +39,7 @@ public class DetailWatchableFragment extends Fragment {
     private FragmentHolderLogic mainLogic;
     private FragmentHolderLogic castLogic;
     private FragmentHolderLogic videoLogic;
+    private FragmentHolderLogic seasonLogic;
 
     private WatchableObject watchableObject;
 
@@ -67,6 +72,14 @@ public class DetailWatchableFragment extends Fragment {
         );
 
 
+
+        ImageView header = (ImageView) ToolbarManager.coordinatorLayout().findViewById(R.id.banner_image);
+        Picasso.with(this.getContext())
+                .load(watchableObject.getBackdropUri("original"))
+                .fit()
+                .centerCrop()
+                .into(header);
+
         detailView = inflater.inflate(R.layout.fragment_discover, container, false);
 
         if (getArguments().getString("frame") != null) {
@@ -85,8 +98,6 @@ public class DetailWatchableFragment extends Fragment {
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this.getChildFragmentManager());
 
-        Log.d("ARGS", getArguments().toString());
-
         viewPagerAdapter.addFragment(
                 FragmentHolder.newInstance(
                         R.layout.fragment_detail_watchable_main,
@@ -103,6 +114,19 @@ public class DetailWatchableFragment extends Fragment {
                 ),
                 getResources().getString(R.string.detail_title_cast)
         );
+
+
+        if (watchableObject instanceof TvShow) {
+            viewPagerAdapter.addFragment(
+                    FragmentHolder.newInstance(
+                            R.layout.fragment_detail_watchable_seasons,
+                            seasonLogic,
+                            (Bundle)getArguments().clone()
+                    ),
+                    getResources().getString(R.string.detail_title_seasons)
+            );
+        }
+
         viewPagerAdapter.addFragment(
                 FragmentHolder.newInstance(
                         R.layout.fragment_detail_watchable_videos,
@@ -111,6 +135,7 @@ public class DetailWatchableFragment extends Fragment {
                 ),
                 getResources().getString(R.string.detail_title_videos)
         );
+
         viewPager.setAdapter(viewPagerAdapter);
 
         tabLayout = (TabLayout) ToolbarManager.coordinatorLayout().findViewById(R.id.tablayout);
@@ -130,5 +155,8 @@ public class DetailWatchableFragment extends Fragment {
                         findViewById(R.id.collapsingToolbarLayout));
         castLogic = new DetailCastLogic(watchableObject);
         videoLogic = new DetailVideoLogic(watchableObject);
+        if (watchableObject instanceof TvShow) {
+            seasonLogic = new DetailSeasonLogic((TvShow) watchableObject);
+        }
     }
 }

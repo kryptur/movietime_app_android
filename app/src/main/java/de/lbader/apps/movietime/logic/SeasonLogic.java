@@ -12,34 +12,27 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import junit.framework.Assert;
-
-import org.w3c.dom.Text;
-
 import de.lbader.apps.movietime.R;
+import de.lbader.apps.movietime.activities.MainActivity;
 import de.lbader.apps.movietime.api.SimpleCallback;
 import de.lbader.apps.movietime.api.objects.Movie;
+import de.lbader.apps.movietime.api.objects.Season;
 import de.lbader.apps.movietime.api.objects.TvShow;
 import de.lbader.apps.movietime.api.objects.WatchableObject;
 import de.lbader.apps.movietime.fragments.FragmentHolderLogic;
 import de.lbader.apps.movietime.toolbar.ToolbarManager;
 
-public class DetailWatchLogic implements FragmentHolderLogic {
-    private WatchableObject watchableObject;
+public class SeasonLogic implements FragmentHolderLogic {
+    private Season season;
     private View detailView;
     private Context context;
-    private CollapsingToolbarLayout toolbarLayout;
     private TextView title;
     private ImageView poster;
     private TextView taglineHeader;
     private TextView tagline;
 
-    public DetailWatchLogic(WatchableObject watchableObject) {
-        this.watchableObject = watchableObject;
-    }
-
-    public void setToolbarLayout(CollapsingToolbarLayout toolbarLayout) {
-        this.toolbarLayout = toolbarLayout;
+    public SeasonLogic(Season season) {
+        this.season = season;
     }
 
     @Override
@@ -50,15 +43,17 @@ public class DetailWatchLogic implements FragmentHolderLogic {
         poster = (ImageView) detailView.findViewById(R.id.posterImageView);
         tagline = (TextView) detailView.findViewById(R.id.tagline);
         taglineHeader = (TextView) detailView.findViewById(R.id.taglineHeader);
-        if (watchableObject instanceof TvShow) {
-            tagline.setVisibility(View.GONE);
-            taglineHeader.setVisibility(View.GONE);
-        }
+        tagline.setVisibility(View.GONE);
+        taglineHeader.setVisibility(View.GONE);
+        detailView.findViewById(R.id.rating).setVisibility(View.GONE);
+        detailView.findViewById(R.id.ratingHeader).setVisibility(View.GONE);
+
+
 
         ViewCompat.setTransitionName(title, args.getString("title"));
         ViewCompat.setTransitionName(poster, args.getString("poster"));
 
-        watchableObject.load(new SimpleCallback() {
+        season.load(new SimpleCallback() {
                 @Override
                 public void callback() {
                     setup();
@@ -68,13 +63,10 @@ public class DetailWatchLogic implements FragmentHolderLogic {
 
     private void setup() {
         TextView overview = (TextView) detailView.findViewById(R.id.overviewTextView);
-        RatingBar rating = (RatingBar) detailView.findViewById(R.id.rating);
-
-        toolbarLayout.setTitle(watchableObject.getName());
 
         if (poster.getDrawable() == null) {
             Picasso.with(context)
-                    .load(watchableObject.getPosterUri())
+                    .load(season.getPosterUri())
                     .noFade()
                     .fit()
                     .centerInside()
@@ -82,20 +74,15 @@ public class DetailWatchLogic implements FragmentHolderLogic {
         }
 
 
-        title.setText(watchableObject.getName());
-        if (watchableObject instanceof Movie) {
-            Log.d("Tagline", ((Movie) watchableObject).getTagline());
-            tagline.setText(((Movie) watchableObject).getTagline());
-        }
+        title.setText(season.getName());
 
-        ((TextView)detailView.findViewById(R.id.votecount)).setText(watchableObject.getVoteCount() + " ");
-        ((TextView)detailView.findViewById(R.id.status)).setText(watchableObject.getStatus());
-        ((TextView)detailView.findViewById(R.id.releasedate)).setText(watchableObject.getReleaseDate());
+        ((TextView)detailView.findViewById(R.id.statusHeader)).setText(
+                MainActivity.context.getResources().getString(R.string.episodecount));
 
-        overview.setText(watchableObject.getOverview());
 
-        rating.setNumStars(5);
-        rating.setStepSize(0.25f);
-        rating.setRating((float)watchableObject.getVote_average() / 2);
+        ((TextView)detailView.findViewById(R.id.status)).setText("" + season.getEpisodeCount());
+        ((TextView)detailView.findViewById(R.id.releasedate)).setText(season.getReleaseDate());
+
+        overview.setText(season.getOverview());
     }
 }

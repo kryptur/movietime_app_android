@@ -1,7 +1,6 @@
 package de.lbader.apps.movietime.adapters;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
 import android.support.v4.view.ViewCompat;
@@ -18,36 +17,36 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import de.lbader.apps.movietime.R;
-import de.lbader.apps.movietime.api.objects.BaseObject;
-import de.lbader.apps.movietime.api.objects.Movie;
-import de.lbader.apps.movietime.api.objects.Person;
-import de.lbader.apps.movietime.api.objects.TvShow;
-import de.lbader.apps.movietime.api.objects.WatchableObject;
+import de.lbader.apps.movietime.api.objects.Cast;
+import de.lbader.apps.movietime.api.objects.Season;
 import de.lbader.apps.movietime.fragments.DetailPersonFragment;
+import de.lbader.apps.movietime.fragments.DetailSeasonFragment;
 import de.lbader.apps.movietime.fragments.DetailWatchableFragment;
 import de.lbader.apps.movietime.navigation.Navigation;
-import de.lbader.apps.movietime.viewfactories.BaseObjectHolder;
+import de.lbader.apps.movietime.viewfactories.CastObjectHolder;
+import de.lbader.apps.movietime.viewfactories.SeasonObjectHolder;
 
-public class RecylcerBaseObjectAdapter extends RecyclerView.Adapter<BaseObjectHolder> {
+public class RecylcerSeasonObjectAdapter extends RecyclerView.Adapter<SeasonObjectHolder> {
     private Context context;
-    private ArrayList<BaseObject> elements = new ArrayList<>();
-    private BaseObjectAdapterEvents events;
-
-    private String unique;
+    private ArrayList<Season> elements = new ArrayList<>();
+    private SeasonObjectAdapterEvents events;
+    private boolean isPersonCast = false;
 
     private int endOffset;
 
-    public RecylcerBaseObjectAdapter(Context c, int endOffset) {
+    private String unique;
+
+    public RecylcerSeasonObjectAdapter(Context c, int endOffset) {
         this.context = c;
         this.endOffset = endOffset;
         unique = UUID.randomUUID().toString();
     }
 
-    public void setBaseObjectAdapterEvents(BaseObjectAdapterEvents events) {
+    public void setSeasonObjectAdapterEvents(SeasonObjectAdapterEvents events) {
         this.events = events;
     }
 
-    public void addItem(BaseObject item) {
+    public void addItem(Season item) {
         elements.add(item);
     }
 
@@ -56,33 +55,33 @@ public class RecylcerBaseObjectAdapter extends RecyclerView.Adapter<BaseObjectHo
     }
 
     @Override
-    public BaseObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SeasonObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).
-                inflate(R.layout.cardview_baseobject, null);
-        BaseObjectHolder baseObjectHolder = new BaseObjectHolder(view);
-        return baseObjectHolder;
+                inflate(R.layout.cardview_season, null);
+        SeasonObjectHolder objectHolder = new SeasonObjectHolder(view);
+        return objectHolder;
     }
 
     @Override
-    public void onBindViewHolder(final BaseObjectHolder holder, final int position) {
+    public void onBindViewHolder(final SeasonObjectHolder holder, int position) {
         if (position > elements.size() - endOffset && events != null) {
             events.onEndReached(elements);
         }
         holder.update(elements.get(position));
-        final ImageView poster = holder.getImageView();
-        final TextView title = holder.getTitleView();
-        final CardView card = holder.getCardView();
-        final BaseObject elem = elements.get(position);
 
-        final String uniqueTitle = "detailTitle_" + position + "_" + unique;
-        final String uniquePoster = "detailPoster_" + position + "_" + unique;
-        final String uniqueCard = "detailCard_" + position + "_" + unique;
+        final ImageView poster = holder.getImageView();
+        final TextView title = holder.getTextView();
+        final CardView card = holder.getCardView();
+
+        final String uniqueTitle = "castTitle_" + position + "_" + unique;
+        final String uniquePoster = "castPoster_" + position + "_" + unique;
+        final String uniqueCard = "castFrame_" + position + "_" + unique;
 
         ViewCompat.setTransitionName(poster, uniquePoster);
         ViewCompat.setTransitionName(title, uniqueTitle);
         ViewCompat.setTransitionName(card, uniqueCard);
 
-
+        final Season elem = elements.get(position);
         holder.setOnClickListener(new CardView.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,11 +92,7 @@ public class RecylcerBaseObjectAdapter extends RecyclerView.Adapter<BaseObjectHo
                 sharedElements.put("frame", new Pair(uniqueCard, card));
 
                 Fragment newFragment;
-                if (elem instanceof Movie || elem instanceof TvShow) {
-                    newFragment = DetailWatchableFragment.newInstance((WatchableObject) elem);
-                } else {
-                    newFragment = DetailPersonFragment.newInstance((Person) elem);
-                }
+                newFragment = DetailSeasonFragment.newInstance(elem);
 
                 Navigation.instance.navigate(
                         newFragment,
@@ -113,7 +108,7 @@ public class RecylcerBaseObjectAdapter extends RecyclerView.Adapter<BaseObjectHo
         return elements.size();
     }
 
-    public interface BaseObjectAdapterEvents {
-        void onEndReached(ArrayList<BaseObject> elements);
+    public interface SeasonObjectAdapterEvents {
+        void onEndReached(ArrayList<Season> elements);
     }
 }

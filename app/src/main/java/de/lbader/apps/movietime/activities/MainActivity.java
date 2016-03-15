@@ -1,5 +1,6 @@
 package de.lbader.apps.movietime.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -18,8 +19,11 @@ import android.widget.ProgressBar;
 import de.lbader.apps.movietime.R;
 import de.lbader.apps.movietime.api.TmdbApi;
 import de.lbader.apps.movietime.fragments.DiscoverFragment;
+import de.lbader.apps.movietime.fragments.MoviesFragment;
 import de.lbader.apps.movietime.fragments.PersonsFragment;
+import de.lbader.apps.movietime.fragments.SearchFragment;
 import de.lbader.apps.movietime.fragments.StartFragment;
+import de.lbader.apps.movietime.fragments.TvShowsFragment;
 import de.lbader.apps.movietime.navigation.Navigation;
 import de.lbader.apps.movietime.toolbar.ToolbarManager;
 
@@ -27,11 +31,14 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private Navigation navi;
+    public static Context context;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        context = this;
 
         TmdbApi.init((ProgressBar) findViewById(R.id.loadingBar));
 
@@ -61,9 +68,21 @@ public class MainActivity extends AppCompatActivity {
                         navi.clear();
                         navi.navigate(new DiscoverFragment(), R.id.fragment_container);
                         return true;
+                    case R.id.mainmenu_movies:
+                        navi.clear();
+                        navi.navigate(new MoviesFragment(), R.id.fragment_container);
+                        return true;
+                    case R.id.mainmenu_series:
+                        navi.clear();
+                        navi.navigate(new TvShowsFragment(), R.id.fragment_container);
+                        return true;
                     case R.id.mainmenu_persons:
                         navi.clear();
                         navi.navigate(new PersonsFragment(), R.id.fragment_container);
+                        return true;
+                    case R.id.mainmenu_search:
+                        navi.clear();
+                        navi.navigate(new SearchFragment(), R.id.fragment_container);
                         return true;
                 }
             }

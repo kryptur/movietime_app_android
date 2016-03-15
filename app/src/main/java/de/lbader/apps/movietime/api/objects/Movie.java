@@ -34,14 +34,9 @@ public class Movie extends WatchableObject {
     private double popularity;
     private List<Company> production_companies;
     private List<Country> production_countries;
-    private String release_date;
     private int revenue;
     private int runtime;
-    private List<Language> spoken_languages;
-    private String status;
     private String tagline;
-    private boolean video;
-    private int vote_count;
 
     public Movie() {
         api_base = "movie/";
@@ -56,13 +51,16 @@ public class Movie extends WatchableObject {
             this.poster_path = jsonObject.getString("poster_path");
             this.backdrop_path = jsonObject.getString("backdrop_path");
             this.vote_average = jsonObject.getDouble("vote_average");
+            this.voteCount  = jsonObject.optInt("vote_count", 0);
+            this.tagline = jsonObject.optString("tagline", "");
+            this.status = jsonObject.optString("status", "");
+            this.releaseDate = jsonObject.optString("release_date", "");
         } catch (JSONException ex) {
             ex.printStackTrace();
         }
     }
 
     public void load(int dbId, ApiCallback callback) {
-
     }
 
     @Override
@@ -88,5 +86,9 @@ public class Movie extends WatchableObject {
                 }
             });
         }
+    }
+
+    public String getTagline() {
+        return tagline;
     }
 }
