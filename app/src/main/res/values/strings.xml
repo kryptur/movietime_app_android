@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Movie Time</string>
+    <string name="app_name" translatable="false">MovieTime</string>
     <string name="drawer_open">Navigation öffnen</string>
     <string name="drawer_close">Navigation schließen</string>
 
