@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import de.lbader.apps.movietime.R;
 import de.lbader.apps.movietime.fragments.FragmentHolderLogic;
 
 public class FragmentHolder extends Fragment {
@@ -25,7 +26,7 @@ public class FragmentHolder extends Fragment {
 
     public static FragmentHolder newInstance(int layout, FragmentHolderLogic logic, Bundle args) {
         FragmentHolder fragmentHolder = new FragmentHolder();
-        args.putInt("layout", layout);
+        args.putInt("fraglayout", layout);
         fragmentHolder.setArguments(args);
         fragmentHolder.logic = logic;
         return fragmentHolder;
@@ -38,8 +39,9 @@ public class FragmentHolder extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        resId = getArguments().getInt("layout");
-        View view = inflater.inflate(resId, container, false);
+        resId = getArguments().getInt("fraglayout");
+        View view = inflater.inflate(resId, container, false);;
+
         if (logic != null) {
             logic.init(getContext(), view, getArguments());
         }

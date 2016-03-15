@@ -3,6 +3,7 @@ package de.lbader.apps.movietime.adapters;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.Pair;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.UUID;
 
 import de.lbader.apps.movietime.R;
 import de.lbader.apps.movietime.api.objects.BaseObject;
@@ -36,10 +38,13 @@ public class RecylcerCastObjectAdapter extends RecyclerView.Adapter<CastObjectHo
 
     private int endOffset;
 
+    private String unique;
+
     public RecylcerCastObjectAdapter(Context c, int endOffset, boolean isPersonCast) {
         this.context = c;
         this.endOffset = endOffset;
         this.isPersonCast = isPersonCast;
+        unique = UUID.randomUUID().toString();
     }
 
     public void setCastObjectAdapterEvents(CastObjectAdapterEvents events) {
@@ -71,18 +76,25 @@ public class RecylcerCastObjectAdapter extends RecyclerView.Adapter<CastObjectHo
 
         final ImageView poster = holder.getImageView();
         final TextView title = holder.getTextView();
-        ViewCompat.setTransitionName(title, "castTitle_" + position);
-        ViewCompat.setTransitionName(poster, "castPoster_" + position);
+        final CardView card = holder.getCardView();
+
+        final String uniqueTitle = "castTitle_" + position + "_" + unique;
+        final String uniquePoster = "castPoster_" + position + "_" + unique;
+        final String uniqueCard = "castFrame_" + position + "_" + unique;
+
+        ViewCompat.setTransitionName(poster, uniquePoster);
+        ViewCompat.setTransitionName(title, uniqueTitle);
+        ViewCompat.setTransitionName(card, uniqueCard);
+
         final Cast elem = elements.get(position);
         holder.setOnClickListener(new CardView.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                HashMap<String, View> sharedElements = new HashMap<>();
-                //sharedElements.put("castPoster_" + holder.getAdapterPosition(), poster);
-                //sharedElements.put("castTitle_" + holder.getAdapterPosition(), title);
-                sharedElements.put("castPoster", poster);
-                sharedElements.put("castTitle", title);
+                HashMap<String, Pair<String, View>> sharedElements = new HashMap<>();
+                sharedElements.put("poster", new Pair(uniquePoster, poster));
+                sharedElements.put("title", new Pair(uniqueTitle, title));
+                sharedElements.put("frame", new Pair(uniqueCard, card));
 
                 Fragment newFragment;
                 if (isPersonCast) {
@@ -90,10 +102,6 @@ public class RecylcerCastObjectAdapter extends RecyclerView.Adapter<CastObjectHo
                 } else {
                     newFragment = DetailPersonFragment.newInstance(elem.getPerson());
                 }
-                Bundle args = new Bundle();
-                args.putString("textId", "castTitle_" + holder.getAdapterPosition());
-                args.putString("posterId", "castPoster_" + holder.getAdapterPosition());
-                newFragment.setArguments(args);
 
                 Navigation.instance.navigate(
                         newFragment,

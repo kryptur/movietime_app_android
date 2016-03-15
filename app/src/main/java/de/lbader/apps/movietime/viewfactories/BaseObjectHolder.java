@@ -47,4 +47,8 @@ public class BaseObjectHolder extends RecyclerView.ViewHolder {
     public TextView getTitleView() {
         return titleView;
     }
+
+    public CardView getCardView() {
+        return cardView;
+    }
 }

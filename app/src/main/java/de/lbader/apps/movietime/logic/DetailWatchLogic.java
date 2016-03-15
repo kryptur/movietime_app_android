@@ -4,12 +4,15 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.ViewCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+
+import junit.framework.Assert;
 
 import de.lbader.apps.movietime.R;
 import de.lbader.apps.movietime.api.SimpleCallback;
@@ -40,8 +43,8 @@ public class DetailWatchLogic implements FragmentHolderLogic {
         title = (TextView) detailView.findViewById(R.id.titleTextView);
         poster = (ImageView) detailView.findViewById(R.id.posterImageView);
 
-        //ViewCompat.setTransitionName(title, args.getString("textId"));
-        //ViewCompat.setTransitionName(poster, args.getString("posterId"));
+        ViewCompat.setTransitionName(title, args.getString("title"));
+        ViewCompat.setTransitionName(poster, args.getString("poster"));
 
 
         if (watchableObject.isLoaded()) {

@@ -7,9 +7,12 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.util.Pair;
 import android.support.v4.view.ViewCompat;
+import android.transition.Fade;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -28,21 +31,40 @@ public class Navigation {
     }
 
 
-    public void navigate(Fragment fragment, int container, HashMap<String, View> sharedElements) {
+    public void navigate(Fragment fragment, int container, HashMap<String, Pair<String, View>> sharedElements) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Transition detail = TransitionInflater.from(context).inflateTransition(
                     R.transition.change_image_transform
             );
             fragment.setSharedElementEnterTransition(detail);
             fragment.setSharedElementReturnTransition(detail);
+            fragment.setEnterTransition(new Fade());
+            fragment.setExitTransition(new Fade());
         }
+
+
+        Bundle args = fragment.getArguments();
+        if (args == null) {
+            args = new Bundle();
+        }
+        long transId = System.currentTimeMillis();
 
         FragmentTransaction ft = ((MainActivity)context).getSupportFragmentManager().beginTransaction();
 
         for (String transitionName : sharedElements.keySet()) {
-            ViewCompat.setTransitionName(sharedElements.get(transitionName), transitionName);
-            ft.addSharedElement(sharedElements.get(transitionName), transitionName);
+            String unique = sharedElements.get(transitionName).first;
+
+            ViewCompat.setTransitionName(sharedElements.get(transitionName).second, unique);
+
+            ft.addSharedElement(sharedElements.get(transitionName).second, unique);
+
+            args.putString(transitionName, unique);
+
+            Log.d("SETTING", transitionName);
         }
+
+        fragment.setArguments(args);
+
         ft.replace(container, fragment);
         ft.addToBackStack(null);
         ft.commit();
@@ -50,7 +72,7 @@ public class Navigation {
     }
 
     public void navigate(Fragment fragment, int container) {
-        this.navigate(fragment, container, new HashMap<String, View>());
+        this.navigate(fragment, container, new HashMap<String, Pair<String, View>>());
     }
 
     public void onBackPressed() {

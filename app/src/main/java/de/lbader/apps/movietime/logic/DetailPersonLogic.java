@@ -2,6 +2,7 @@ package de.lbader.apps.movietime.logic;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.view.ViewCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -38,6 +39,9 @@ public class DetailPersonLogic implements FragmentHolderLogic {
                 .into(poster);
 
         title.setText(person.getName());
+
+        ViewCompat.setTransitionName(title, args.getString("title"));
+        ViewCompat.setTransitionName(poster, args.getString("poster"));
 
         person.loadAll(new SimpleCallback() {
             @Override

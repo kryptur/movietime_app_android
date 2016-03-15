@@ -58,4 +58,8 @@ public class CastObjectHolder extends RecyclerView.ViewHolder {
     public TextView getTextView() {
         return name;
     }
+
+    public CardView getCardView() {
+        return cardView;
+    }
 }

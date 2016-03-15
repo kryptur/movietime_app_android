@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +69,10 @@ public class DetailWatchableFragment extends Fragment {
 
         detailView = inflater.inflate(R.layout.fragment_discover, container, false);
 
+        if (getArguments().getString("frame") != null) {
+            ViewCompat.setTransitionName(detailView, getArguments().getString("frame"));
+        }
+
         createLogics();
 
         return detailView;
@@ -79,25 +85,29 @@ public class DetailWatchableFragment extends Fragment {
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this.getChildFragmentManager());
 
+        Log.d("ARGS", getArguments().toString());
+
         viewPagerAdapter.addFragment(
                 FragmentHolder.newInstance(
                         R.layout.fragment_detail_watchable_main,
                         mainLogic,
-                        getArguments()
+                        (Bundle)getArguments().clone()
                 ),
                 getResources().getString(R.string.detail_title_main)
         );
         viewPagerAdapter.addFragment(
                 FragmentHolder.newInstance(
                         R.layout.fragment_detail_watchable_cast,
-                        castLogic
+                        castLogic,
+                        (Bundle)getArguments().clone()
                 ),
                 getResources().getString(R.string.detail_title_cast)
         );
         viewPagerAdapter.addFragment(
                 FragmentHolder.newInstance(
                         R.layout.fragment_detail_watchable_videos,
-                        videoLogic
+                        videoLogic,
+                        (Bundle)getArguments().clone()
                 ),
                 getResources().getString(R.string.detail_title_videos)
         );

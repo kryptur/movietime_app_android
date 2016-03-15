@@ -4,6 +4,7 @@ package de.lbader.apps.movietime.fragments;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -52,7 +53,9 @@ public class DetailPersonFragment extends Fragment {
         ToolbarManager.setToolbar(R.layout.toolbar_discover,
                 person.getName());
 
-        detailView = inflater.inflate(R.layout.fragment_detail_person, container, false);
+        detailView = inflater.inflate(R.layout.fragment_detail_person, container, false);if (getArguments().getString("frame") != null) {
+            ViewCompat.setTransitionName(detailView, getArguments().getString("frame"));
+        }
 
         createLogics();
 
@@ -69,14 +72,16 @@ public class DetailPersonFragment extends Fragment {
         viewPagerAdapter.addFragment(
                 FragmentHolder.newInstance(
                         R.layout.fragment_detail_person_main,
-                        mainLogic
+                        mainLogic,
+                        (Bundle)getArguments().clone()
                 ),
                 getResources().getString(R.string.detail_title_main)
         );
         viewPagerAdapter.addFragment(
                 FragmentHolder.newInstance(
                         R.layout.fragment_detail_person_cast,
-                        castLogic
+                        castLogic,
+                        (Bundle)getArguments().clone()
                 ),
                 getResources().getString(R.string.detail_title_roles)
         );

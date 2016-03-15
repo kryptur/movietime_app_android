@@ -3,6 +3,7 @@ package de.lbader.apps.movietime.adapters;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.Pair;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 import de.lbader.apps.movietime.R;
 import de.lbader.apps.movietime.api.objects.BaseObject;
@@ -31,11 +33,14 @@ public class RecylcerBaseObjectAdapter extends RecyclerView.Adapter<BaseObjectHo
     private ArrayList<BaseObject> elements = new ArrayList<>();
     private BaseObjectAdapterEvents events;
 
+    private String unique;
+
     private int endOffset;
 
     public RecylcerBaseObjectAdapter(Context c, int endOffset) {
         this.context = c;
         this.endOffset = endOffset;
+        unique = UUID.randomUUID().toString();
     }
 
     public void setBaseObjectAdapterEvents(BaseObjectAdapterEvents events) {
@@ -66,18 +71,26 @@ public class RecylcerBaseObjectAdapter extends RecyclerView.Adapter<BaseObjectHo
         holder.update(elements.get(position));
         final ImageView poster = holder.getImageView();
         final TextView title = holder.getTitleView();
-        ViewCompat.setTransitionName(title, "detailTitle_" + position);
-        ViewCompat.setTransitionName(poster, "detailPoster_" + position);
+        final CardView card = holder.getCardView();
         final BaseObject elem = elements.get(position);
+
+        final String uniqueTitle = "detailTitle_" + position + "_" + unique;
+        final String uniquePoster = "detailPoster_" + position + "_" + unique;
+        final String uniqueCard = "detailCard_" + position + "_" + unique;
+
+        ViewCompat.setTransitionName(poster, uniquePoster);
+        ViewCompat.setTransitionName(title, uniqueTitle);
+        ViewCompat.setTransitionName(card, uniqueCard);
+
+
         holder.setOnClickListener(new CardView.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                HashMap<String, View> sharedElements = new HashMap<>();
-                //sharedElements.put("detailPoster_" + holder.getAdapterPosition(), poster);
-                //sharedElements.put("detailTitle_" + holder.getAdapterPosition(), title);
-                sharedElements.put("detailPoster", poster);
-                sharedElements.put("detailTitle", title);
+                HashMap<String, Pair<String, View>> sharedElements = new HashMap<>();
+                sharedElements.put("poster", new Pair(uniquePoster, poster));
+                sharedElements.put("title", new Pair(uniqueTitle, title));
+                sharedElements.put("frame", new Pair(uniqueCard, card));
 
                 Fragment newFragment;
                 if (elem instanceof Movie || elem instanceof TvShow) {
@@ -85,10 +98,6 @@ public class RecylcerBaseObjectAdapter extends RecyclerView.Adapter<BaseObjectHo
                 } else {
                     newFragment = DetailPersonFragment.newInstance((Person) elem);
                 }
-                Bundle args = new Bundle();
-                args.putString("textId", "detailTitle_" + holder.getAdapterPosition());
-                args.putString("posterId", "detailPoster_" + holder.getAdapterPosition());
-                newFragment.setArguments(args);
 
                 Navigation.instance.navigate(
                         newFragment,
