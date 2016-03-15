@@ -54,12 +54,15 @@ public class MainActivity extends AppCompatActivity {
                     default:
                         return false;
                     case R.id.mainmenu_start:
+                        navi.clear();
                         navi.navigate(new StartFragment(), R.id.fragment_container);
                         return true;
                     case R.id.mainmenu_discover:
+                        navi.clear();
                         navi.navigate(new DiscoverFragment(), R.id.fragment_container);
                         return true;
                     case R.id.mainmenu_persons:
+                        navi.clear();
                         navi.navigate(new PersonsFragment(), R.id.fragment_container);
                         return true;
                 }

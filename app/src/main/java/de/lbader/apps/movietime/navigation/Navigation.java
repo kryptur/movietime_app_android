@@ -20,6 +20,7 @@ import java.util.HashMap;
 
 import de.lbader.apps.movietime.R;
 import de.lbader.apps.movietime.activities.MainActivity;
+import de.lbader.apps.movietime.adapters.FragmentHolder;
 
 public class Navigation {
     Context context;
@@ -77,10 +78,15 @@ public class Navigation {
 
     public void onBackPressed() {
         FragmentManager fragmentManager = ((MainActivity)context).getSupportFragmentManager();
-        if (fragmentManager.getBackStackEntryCount() > 0) {
+        if (fragmentManager.getBackStackEntryCount() > 1) {
             fragmentManager.popBackStack();
         } else {
             ((MainActivity)context).finish();
         }
+    }
+
+    public void clear() {
+        FragmentManager fragmentManager = ((MainActivity)context).getSupportFragmentManager();
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 }
