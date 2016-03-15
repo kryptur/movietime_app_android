@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/menu_group_1">
+        <item android:id="@+id/mainmenu_start"
+            android:title="@string/menutitle_start" />
+        <item android:id="@+id/mainmenu_discover"
+            android:title="@string/menutitle_discover" />
+        <item android:id="@+id/mainmenu_movies"
+            android:title="@string/menutitle_movies" />
+        <item android:id="@+id/mainmenu_series"
+            android:title="@string/menutitle_series" />
+        <item android:id="@+id/mainmenu_persons"
+            android:title="@string/menutitle_persons" />
+        <item android:id="@+id/mainmenu_search"
+            android:title="@string/menutitle_search" />
+
+    </group>
+    <group android:id="@+id/menu_group_2">
+        <item android:id="@+id/mainmenu_accout"
+            android:title="@string/menutitle_account" />
+    </group>
+</menu>

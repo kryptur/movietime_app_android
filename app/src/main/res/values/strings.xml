@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name" translatable="false">Movie Time</string>
+    <string name="drawer_open">Navigation öffnen</string>
+    <string name="drawer_close">Navigation schließen</string>
+
+    <!-- Main Menu -->
+    <string name="menutitle_start">Demnächst</string>
+    <string name="menutitle_discover">Entdecken</string>
+    <string name="menutitle_movies">Filme</string>
+    <string name="menutitle_series">Serien</string>
+    <string name="menutitle_persons">Personen</string>
+    <string name="menutitle_search">Suche</string>
+    <string name="menutitle_account">Mein Account</string>
+
+    <!-- Different -->
+    <string name="detail_title_main">Informationen</string>
+    <string name="detail_title_cast">Besetzung</string>
+    <string name="detail_title_roles">Rollen</string>
+    <string name="detail_title_reviews">Rezensionen</string>
+    <string name="detail_title_videos">Videos</string>
+
+    <string name="birthdate">Geburtsdatum</string>
+    <string name="birthlocation">Geburtsort</string>
+
+    <string name="as">als</string>
+</resources>
